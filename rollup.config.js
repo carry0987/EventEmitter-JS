@@ -1,4 +1,5 @@
 import typescript from '@rollup/plugin-typescript';
+import terser from '@rollup/plugin-terser';
 import replace from '@rollup/plugin-replace';
 import resolve from '@rollup/plugin-node-resolve';
 import { dts } from 'rollup-plugin-dts';
@@ -7,10 +8,12 @@ import { createRequire } from 'module';
 const pkg = createRequire(import.meta.url)('./package.json');
 
 const isDts = process.env.BUILD === 'dts';
+const sourceFile = 'src/index.ts';
+const dtsFile = 'dist/dts/index.d.ts';
 
 // ESM build configuration
 const esmConfig = {
-    input: 'src/index.ts',
+    input: sourceFile,
     output: [
         {
             file: pkg.module,
@@ -28,9 +31,29 @@ const esmConfig = {
     ]
 };
 
+// UMD build configuration
+const umdConfig = {
+    input: sourceFile,
+    output: {
+        file: pkg.main,
+        format: 'umd',
+        name: 'eventEmitter',
+        sourcemap: false,
+        plugins: !isDts ? [terser()] : []
+    },
+    plugins: [
+        resolve(),
+        typescript(),
+        replace({
+            preventAssignment: true,
+            __version__: pkg.version
+        })
+    ]
+};
+
 // TypeScript type definition configuration
 const dtsConfig = {
-    input: 'dist/dts/index.d.ts',
+    input: dtsFile,
     output: {
         file: pkg.types,
         format: 'es'
@@ -41,4 +64,4 @@ const dtsConfig = {
     ]
 };
 
-export default isDts ? dtsConfig : esmConfig;
+export default isDts ? dtsConfig : [esmConfig, umdConfig];
