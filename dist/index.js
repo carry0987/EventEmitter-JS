@@ -12,6 +12,15 @@ class EventEmitter {
     addListener(event, listener) {
         return this.on(event, listener);
     }
+    clearListener(event) {
+        if (event) {
+            this.callbacks[event] = [];
+        }
+        else {
+            this.callbacks = {};
+        }
+        return this;
+    }
     on(event, listener) {
         this.init(event);
         this.callbacks[event].push(listener);
@@ -48,6 +57,6 @@ class EventEmitter {
     }
 }
 
-const version = '1.1.1';
+const version = '1.2.0';
 
 export { EventEmitter, version };

@@ -7,6 +7,7 @@ declare class EventEmitter<EventTypes> {
         [event: string]: ((...args: any[]) => void | Promise<void>)[];
     };
     addListener<EventName extends keyof EventTypes>(event: EventName, listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>): EventEmitter<EventTypes>;
+    clearListener<EventName extends keyof EventTypes>(event?: EventName): EventEmitter<EventTypes>;
     on<EventName extends keyof EventTypes>(event: EventName, listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>): EventEmitter<EventTypes>;
     off<EventName extends keyof EventTypes>(event: EventName, listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>): EventEmitter<EventTypes>;
     emit<EventName extends keyof EventTypes>(event: EventName, ...args: EventArgs<EventTypes[EventName]>): Promise<boolean>;

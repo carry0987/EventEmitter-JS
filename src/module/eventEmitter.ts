@@ -21,6 +21,16 @@ class EventEmitter<EventTypes> {
         return this.on(event, listener);
     }
 
+    public clearListener<EventName extends keyof EventTypes>(event?: EventName): EventEmitter<EventTypes> {
+        if (event) {
+            this.callbacks[event as string] = [];
+        } else {
+            this.callbacks = {};
+        }
+
+        return this;
+    }
+
     public on<EventName extends keyof EventTypes>(
         event: EventName,
         listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>
