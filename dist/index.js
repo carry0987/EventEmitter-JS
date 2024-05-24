@@ -1,14 +1,10 @@
 class EventEmitter {
     // Initialize callbacks with an empty object
     callbacks = {};
-    static version = '1.0.0';
     init(event) {
         if (event && !this.callbacks[event]) {
             this.callbacks[event] = [];
         }
-    }
-    get version() {
-        return EventEmitter.version;
     }
     listeners() {
         return this.callbacks;
@@ -51,4 +47,6 @@ class EventEmitter {
     }
 }
 
-export { EventEmitter as default };
+const version = '1.1.0';
+
+export { EventEmitter, version };

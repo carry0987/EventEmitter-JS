@@ -1,5 +1,4 @@
 import typescript from '@rollup/plugin-typescript';
-import terser from '@rollup/plugin-terser';
 import replace from '@rollup/plugin-replace';
 import resolve from '@rollup/plugin-node-resolve';
 import { dts } from 'rollup-plugin-dts';
@@ -13,12 +12,6 @@ const isDts = process.env.BUILD === 'dts';
 const esmConfig = {
     input: 'src/index.ts',
     output: [
-        {
-            file: pkg.main,
-            format: 'umd',
-            name: 'EventEmitter',
-            plugins: !isDts ? [terser()] : []
-        },
         {
             file: pkg.module,
             format: 'es',

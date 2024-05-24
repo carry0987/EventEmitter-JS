@@ -3,16 +3,11 @@ import { EventArgs } from '../type/types';
 class EventEmitter<EventTypes> {
     // Initialize callbacks with an empty object
     private callbacks: { [event: string]: ((...args: any[]) => void)[] } = {};
-    private static version: string = '__version__';
 
     private init(event?: string): void {
         if (event && !this.callbacks[event]) {
             this.callbacks[event] = [];
         }
-    }
-
-    public get version(): string {
-        return EventEmitter.version;
     }
 
     public listeners(): { [event: string]: ((...args: any[]) => void)[] } {

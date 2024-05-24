@@ -1,10 +1,9 @@
 {
   "name": "@carry0987/event-emitter",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "EventEmitter is a TypeScript library that provides a simple yet powerful event-handling mechanism. It allows you to define and manage events in your application.",
   "type": "module",
-  "main": "dist/event-emitter.min.js",
-  "module": "dist/event-emitter.esm.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -32,7 +31,6 @@
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.5",
-    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "rollup": "^4.18.0",
     "rollup-plugin-delete": "^2.0.0",

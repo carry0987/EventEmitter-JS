@@ -1,2 +1,3 @@
-export { EventEmitter as default } from './module/eventEmitter';
+export { EventEmitter } from './module/eventEmitter';
 export { EventArgs } from './type/types';
+export { version } from './module/version';
