@@ -13,7 +13,7 @@
 To install the `EventEmitter` library, use the following command:
 
 ```bash
-npm i @carry0987/event-emitter --save-dev
+npm i @carry0987/event-emitter -D
 ```
 
 ## Usage
