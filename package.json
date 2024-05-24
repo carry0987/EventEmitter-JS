@@ -1,0 +1,43 @@
+{
+  "name": "@carry0987/event-emitter",
+  "version": "1.0.0",
+  "description": "EventEmitter is a TypeScript library that provides a simple yet powerful event-handling mechanism. It allows you to define and manage events in your application.",
+  "type": "module",
+  "main": "dist/event-emitter.min.js",
+  "module": "dist/event-emitter.esm.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:js": "rollup --config rollup.config.js --environment BUILD:js",
+    "build:dts": "rollup --config rollup.config.js --environment BUILD:dts",
+    "build": "npm run build:js && npm run build:dts"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carry0987/EventEmitter-JS.git"
+  },
+  "keywords": [
+    "EventEmitter",
+    "event-emitter"
+  ],
+  "author": "carry0987",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/carry0987/EventEmitter-JS/issues"
+  },
+  "homepage": "https://github.com/carry0987/EventEmitter-JS#readme",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.5",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "rollup": "^4.18.0",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-dts": "^6.1.1",
+    "tslib": "^2.6.2",
+    "typescript": "^5.4.5"
+  }
+}
