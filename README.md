@@ -7,6 +7,7 @@
 - Type-safe event handling
 - Support for one-time event listeners with `once`
 - Flexible event management
+- Support for both synchronous and asynchronous event listeners
 
 ## Installation
 To install the `EventEmitter` library, use the following command:
@@ -81,21 +82,35 @@ emitter.emit('farewell', 'Goodbye, world!'); // Listener will be called
 emitter.emit('farewell', 'Goodbye again!');  // Listener will not be called
 ```
 
+### Using Asynchronous Event Listeners
+Add asynchronous event listeners using the `on` or `once` method:
+
+```typescript
+emitter.on('greet', async (message) => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log(`Async Listener: ${message}`);
+});
+
+emitter.emit('greet', 'Hello, async world!').then(() => {
+    console.log('All async listeners have been called.');
+});
+```
+
 ## API
 
-### `on(event: EventName, listener: (...args: any[]) => void): EventEmitter`
+### `on(event: EventName, listener: (...args: any[]) => void | Promise<void>): EventEmitter`
 Registers an event listener for the specified event.
 
-### `off(event: EventName, listener: (...args: any[]) => void): EventEmitter`
+### `off(event: EventName, listener: (...args: any[]) => void | Promise<void>): EventEmitter`
 Removes the specified event listener.
 
-### `emit(event: EventName, ...args: any[]): boolean`
-Emits the specified event, calling all registered listeners with the provided arguments.
+### `emit(event: EventName, ...args: any[]): Promise<boolean>`
+Emits the specified event, calling all registered listeners with the provided arguments. Returns a promise that resolves to `true` if there were listeners, and `false` otherwise.
 
-### `once(event: EventName, listener: (...args: any[]) => void): EventEmitter`
+### `once(event: EventName, listener: (...args: any[]) => void | Promise<void>): EventEmitter`
 Registers a one-time event listener for the specified event. The listener will be called at most once after being added.
 
-### `listeners(): { [event: string]: ((...args: any[]) => void)[] }`
+### `listeners(): { [event: string]: ((...args: any[]) => void | Promise<void>)[] }`
 Returns an object containing all registered event listeners.
 
 ## Contributing

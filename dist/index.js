@@ -27,26 +27,27 @@ class EventEmitter {
         this.callbacks[eventName] = this.callbacks[eventName].filter((value) => value != listener);
         return this;
     }
-    emit(event, ...args) {
+    async emit(event, ...args) {
         const eventName = event;
         // Initialize the event
         this.init(eventName);
         // If there are callbacks for this event
         if (this.callbacks[eventName].length > 0) {
-            this.callbacks[eventName].forEach((value) => value(...args));
+            // Execute all callbacks and wait for them to complete if they are promises
+            await Promise.all(this.callbacks[eventName].map(async (value) => await value(...args)));
             return true;
         }
         return false;
     }
     once(event, listener) {
-        const onceListener = (...args) => {
-            listener(...args);
+        const onceListener = async (...args) => {
+            await listener(...args);
             this.off(event, onceListener);
         };
         return this.on(event, onceListener);
     }
 }
 
-const version = '1.1.0';
+const version = '1.1.1';
 
 export { EventEmitter, version };
