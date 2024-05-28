@@ -3,6 +3,8 @@ type EventArgs<T> = [T] extends [(...args: infer U) => any] ? U : [T] extends [v
 declare class EventEmitter<EventTypes> {
     private callbacks;
     private init;
+    private checkListener;
+    hasEvent(event: string): boolean;
     listeners(): {
         [event: string]: ((...args: any[]) => void | Promise<void>)[];
     };

@@ -10,6 +10,16 @@ class EventEmitter<EventTypes> {
         }
     }
 
+    private checkListener(listener: (...args: any[]) => void | Promise<void>): void {
+        if (typeof listener !== 'function') {
+            throw new TypeError('The listener must be a function');
+        }
+    }
+
+    public hasEvent(event: string): boolean {
+        return this.callbacks[event] !== undefined;
+    }
+
     public listeners(): { [event: string]: ((...args: any[]) => void | Promise<void>)[] } {
         return this.callbacks;
     }
@@ -35,6 +45,8 @@ class EventEmitter<EventTypes> {
         event: EventName,
         listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>
     ): EventEmitter<EventTypes> {
+        this.checkListener(listener);
+
         this.init(event as string);
         this.callbacks[event as string].push(listener);
 
@@ -45,6 +57,8 @@ class EventEmitter<EventTypes> {
         event: EventName,
         listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>
     ): EventEmitter<EventTypes> {
+        this.checkListener(listener);
+
         const eventName = event as string;
 
         this.init();
@@ -84,6 +98,8 @@ class EventEmitter<EventTypes> {
         event: EventName,
         listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>
     ): EventEmitter<EventTypes> {
+        this.checkListener(listener);
+
         const onceListener = async (...args: EventArgs<EventTypes[EventName]>) => {
             await listener(...args);
             this.off(event, onceListener);

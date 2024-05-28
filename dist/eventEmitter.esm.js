@@ -6,6 +6,14 @@ class EventEmitter {
             this.callbacks[event] = [];
         }
     }
+    checkListener(listener) {
+        if (typeof listener !== 'function') {
+            throw new TypeError('The listener must be a function');
+        }
+    }
+    hasEvent(event) {
+        return this.callbacks[event] !== undefined;
+    }
     listeners() {
         return this.callbacks;
     }
@@ -22,11 +30,13 @@ class EventEmitter {
         return this;
     }
     on(event, listener) {
+        this.checkListener(listener);
         this.init(event);
         this.callbacks[event].push(listener);
         return this;
     }
     off(event, listener) {
+        this.checkListener(listener);
         const eventName = event;
         this.init();
         if (!this.callbacks[eventName] || this.callbacks[eventName].length === 0) {
@@ -49,6 +59,7 @@ class EventEmitter {
         return false;
     }
     once(event, listener) {
+        this.checkListener(listener);
         const onceListener = async (...args) => {
             await listener(...args);
             this.off(event, onceListener);
@@ -57,6 +68,6 @@ class EventEmitter {
     }
 }
 
-const version = '1.2.1';
+const version = '1.3.0';
 
 export { EventEmitter, version };
