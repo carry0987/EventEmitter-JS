@@ -84,19 +84,38 @@ class EventEmitter<EventTypes> {
         // Initialize the event
         this.init(eventName);
 
-        // If there are callbacks for this event
-        if (this.callbacks[eventName].length > 0) {
-            const results = this.callbacks[eventName].map(value => value(...args));
-            const hasPromise = results.some(result => result instanceof Promise);
-            // If there is a promise, return a promise, otherwise return a boolean
-            if (hasPromise) {
-                return Promise.all(results).then(() => true);
-            } else {
-                return true;
-            }
+        // If there are no callbacks, return false
+        if (this.callbacks[eventName].length <= 0) {
+            return false;
         }
 
-        return false;
+        // Get all results
+        const results = this.callbacks[eventName].map(callback => {
+            try {
+                // Execute callback and capture the result
+                const result = callback(...args);
+                // If result is a promise, wrap it in Promise.resolve to handle uniformly
+                return result instanceof Promise ? result : Promise.resolve(result);
+            } catch (e) {
+                console.error(`Error in event listener for event: ${eventName}`, e); // Logging error
+                // Even if an error occurs, continue processing other callbacks
+                return Promise.resolve();
+            }
+        });
+
+        // Check if any result is a promise
+        const hasPromise = results.some(result => result instanceof Promise);
+
+        // If there is at least one promise, return a promise that resolves when all promises resolve
+        if (hasPromise) {
+            return Promise.all(results).then(() => true).catch((e) => {
+                console.error(`Error handling promises for event: ${eventName}`, e); // Logging error
+                return false;
+            });
+        } else {
+            // If no promises, return true
+            return true;
+        }
     }
 
     public once<EventName extends keyof EventTypes>(
