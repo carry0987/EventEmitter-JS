@@ -1,3 +1,4 @@
+import { describe, beforeEach, test, expect, vi } from 'vitest';
 import { EventEmitter } from '../src/index';
 import { Events } from './interface/event';
 
@@ -13,7 +14,7 @@ describe('EventEmitter', () => {
     });
 
     test('should add and emit an event (async)', async () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         emitter.on('event1', callback);
 
         await emitter.emit('event1', 'test');
@@ -23,7 +24,7 @@ describe('EventEmitter', () => {
     });
 
     test('should emit an event (sync)', () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         emitter.on('event1', callback);
 
         emitter.emit('event1', 'test');
@@ -33,7 +34,7 @@ describe('EventEmitter', () => {
     });
 
     test('should remove a listener (async)', async () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         emitter.on('event1', callback);
         emitter.off('event1', callback);
 
@@ -43,7 +44,7 @@ describe('EventEmitter', () => {
     });
 
     test('should remove a listener (sync)', () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         emitter.on('event1', callback);
         emitter.off('event1', callback);
 
@@ -53,8 +54,8 @@ describe('EventEmitter', () => {
     });
 
     test('should add and emit multiple events (async)', async () => {
-        const callback1 = jest.fn();
-        const callback2 = jest.fn();
+        const callback1 = vi.fn();
+        const callback2 = vi.fn();
         emitter.on('event1', callback1);
         emitter.on('event2', callback2);
 
@@ -66,8 +67,8 @@ describe('EventEmitter', () => {
     });
 
     test('should add and emit multiple events (sync)', () => {
-        const callback1 = jest.fn();
-        const callback2 = jest.fn();
+        const callback1 = vi.fn();
+        const callback2 = vi.fn();
         emitter.on('event1', callback1);
         emitter.on('event2', callback2);
 
@@ -79,8 +80,8 @@ describe('EventEmitter', () => {
     });
 
     test('should clear all listeners (async)', async () => {
-        const callback1 = jest.fn();
-        const callback2 = jest.fn();
+        const callback1 = vi.fn();
+        const callback2 = vi.fn();
         emitter.on('event1', callback1);
         emitter.on('event2', callback2);
         
@@ -94,8 +95,8 @@ describe('EventEmitter', () => {
     });
 
     test('should clear all listeners (sync)', () => {
-        const callback1 = jest.fn();
-        const callback2 = jest.fn();
+        const callback1 = vi.fn();
+        const callback2 = vi.fn();
         emitter.on('event1', callback1);
         emitter.on('event2', callback2);
         
@@ -109,7 +110,7 @@ describe('EventEmitter', () => {
     });
 
     test('should add and emit a once event (async)', async () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         emitter.once('event1', callback);
 
         await emitter.emit('event1', 'test');
@@ -120,7 +121,7 @@ describe('EventEmitter', () => {
     });
 
     test('should add and emit a once event (sync)', () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         emitter.once('event1', callback);
 
         emitter.emit('event1', 'test');
@@ -138,12 +139,11 @@ describe('EventEmitter', () => {
 
     test('should not emit if there are no listeners (sync)', () => {
         const result = emitter.emit('event1', 'test');
-        console.log(result);
         expect(result).toBe(false);
     });
 
     test('should have event when it exists', () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         emitter.on('event1', callback);
 
         expect(emitter.hasEvent('event1')).toBe(true);

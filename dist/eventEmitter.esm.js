@@ -96,6 +96,6 @@ class EventEmitter {
     }
 }
 
-const version = '1.4.1';
+const version = '1.4.2';
 
 export { EventEmitter, version };
