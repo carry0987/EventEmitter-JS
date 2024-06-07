@@ -124,9 +124,15 @@ class EventEmitter<EventTypes> {
     ): EventEmitter<EventTypes> {
         this.checkListener(listener);
 
-        const onceListener = async (...args: EventArgs<EventTypes[EventName]>) => {
-            await listener(...args);
+        const onceListener = (...args: EventArgs<EventTypes[EventName]>) => {
+            // Use a sync wrapper to ensure the listener is removed immediately after execution
+            const result = listener(...args);
+
+            // Remove the listener immediately
             this.off(event, onceListener);
+
+            // Handle async listeners by wrapping the result in Promise.resolve
+            return result instanceof Promise ? result : Promise.resolve(result);
         };
 
         return this.on(event, onceListener);
