@@ -12,7 +12,7 @@ declare class EventEmitter<EventTypes> {
     clearListener<EventName extends keyof EventTypes>(event?: EventName): EventEmitter<EventTypes>;
     on<EventName extends keyof EventTypes>(event: EventName, listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>): EventEmitter<EventTypes>;
     off<EventName extends keyof EventTypes>(event: EventName, listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>): EventEmitter<EventTypes>;
-    emit<EventName extends keyof EventTypes>(event: EventName, ...args: EventArgs<EventTypes[EventName]>): Promise<boolean>;
+    emit<EventName extends keyof EventTypes>(event: EventName, ...args: EventArgs<EventTypes[EventName]>): boolean | Promise<boolean>;
     once<EventName extends keyof EventTypes>(event: EventName, listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>): EventEmitter<EventTypes>;
 }
 

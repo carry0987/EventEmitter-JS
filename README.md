@@ -1,5 +1,5 @@
 # EventEmitter-JS
-[![NPM](https://img.shields.io/npm/v/@carry0987/event-emitter.svg)](https://www.npmjs.com/package/@carry0987/event-emitter)  
+[![NPM](https://img.shields.io/npm/v/@carry0987/event-emitter.svg)](https://www.npmjs.com/package/@carry0987/event-emitter) [![CI](https://github.com/carry0987/EventEmitter-JS/actions/workflows/ci.yml/badge.svg)]  
 `EventEmitter` is a TypeScript library that provides a simple yet powerful event-handling mechanism. It allows you to define and manage events in your application, supporting standard event operations such as `on`, `off`, `emit`, `once`, and more.
 
 ## Features
