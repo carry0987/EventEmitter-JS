@@ -75,10 +75,10 @@ class EventEmitter<EventTypes> {
         return this;
     }
 
-    public async emit<EventName extends keyof EventTypes>(
+    public emit<EventName extends keyof EventTypes>(
         event: EventName,
         ...args: EventArgs<EventTypes[EventName]>
-    ): Promise<boolean> {
+    ): boolean | Promise<boolean> {
         const eventName = event as string;
 
         // Initialize the event
@@ -86,9 +86,14 @@ class EventEmitter<EventTypes> {
 
         // If there are callbacks for this event
         if (this.callbacks[eventName].length > 0) {
-            // Execute all callbacks and wait for them to complete if they are promises
-            await Promise.all(this.callbacks[eventName].map(async (value) => await value(...args)));
-            return true;
+            const results = this.callbacks[eventName].map(value => value(...args));
+            const hasPromise = results.some(result => result instanceof Promise);
+            // If there is a promise, return a promise, otherwise return a boolean
+            if (hasPromise) {
+                return Promise.all(results).then(() => true);
+            } else {
+                return true;
+            }
         }
 
         return false;
