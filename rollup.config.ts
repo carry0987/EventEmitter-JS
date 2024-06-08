@@ -35,7 +35,7 @@ const esmConfig = {
 const umdConfig = {
     input: sourceFile,
     output: {
-        file: pkg.main,
+        file: pkg.main.replace('esm', 'min'),
         format: 'umd',
         name: 'eventEmitter',
         sourcemap: false,
