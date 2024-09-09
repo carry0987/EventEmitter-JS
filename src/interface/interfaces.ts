@@ -20,7 +20,7 @@ export interface EventEmitter<EventTypes> {
 
     off<EventName extends keyof EventTypes>(
         event: EventName,
-        listener: (...args: EventArgs<EventTypes[EventName]>) => void
+        listener?: (...args: EventArgs<EventTypes[EventName]>) => void
     ): EventEmitter<EventTypes>;
 
     emit<EventName extends keyof EventTypes>(
