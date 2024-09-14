@@ -5,18 +5,17 @@ import resolve from '@rollup/plugin-node-resolve';
 import { dts } from 'rollup-plugin-dts';
 import del from 'rollup-plugin-delete';
 import { createRequire } from 'module';
-const pkg = createRequire(import.meta.url)('./package.json');
 
+const pkg = createRequire(import.meta.url)('./package.json');
 const isDts = process.env.BUILD === 'dts';
 const sourceFile = 'src/index.ts';
-const dtsFile = 'dist/dts/index.d.ts';
 
 // ESM build configuration
 const esmConfig = {
     input: sourceFile,
     output: [
         {
-            file: pkg.module,
+            file: pkg.exports['.'].import,
             format: 'es',
             sourcemap: false
         }
@@ -35,7 +34,7 @@ const esmConfig = {
 const umdConfig = {
     input: sourceFile,
     output: {
-        file: pkg.main.replace('esm', 'min'),
+        file: pkg.exports['.'].umd,
         format: 'umd',
         name: 'eventEmitter',
         sourcemap: false,
@@ -53,9 +52,9 @@ const umdConfig = {
 
 // TypeScript type definition configuration
 const dtsConfig = {
-    input: dtsFile,
+    input: sourceFile,
     output: {
-        file: pkg.types,
+        file: pkg.exports['.'].types,
         format: 'es'
     },
     plugins: [
