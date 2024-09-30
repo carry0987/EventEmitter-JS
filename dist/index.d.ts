@@ -38,7 +38,7 @@ declare class EventEmitter<EventTypes> {
      * @param listener - The function to invoke when the event is emitted. Can be asynchronous.
      * @returns The instance of the EventEmitter for method chaining.
      */
-    addListener<EventName extends keyof EventTypes>(event: EventName, listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>): EventEmitter<EventTypes>;
+    addListener<EventName extends keyof EventTypes>(event: EventName, listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>): this;
     /**
      * Clears all listeners for a specific event or, if no event is provided, clears all
      * listeners for all events.
@@ -46,7 +46,7 @@ declare class EventEmitter<EventTypes> {
      *                If omitted, all event listeners are cleared.
      * @returns The instance of the EventEmitter for method chaining.
      */
-    clearListener<EventName extends keyof EventTypes>(event?: EventName): EventEmitter<EventTypes>;
+    clearListener<EventName extends keyof EventTypes>(event?: EventName): this;
     /**
      * Adds a listener for a specific event type. Initializes the event if it's not already
      * present and ensures the listener is valid.
@@ -54,7 +54,7 @@ declare class EventEmitter<EventTypes> {
      * @param listener - The function to call when the event is emitted. Can return a promise.
      * @returns The instance of the EventEmitter for method chaining.
      */
-    on<EventName extends keyof EventTypes>(event: EventName, listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>): EventEmitter<EventTypes>;
+    on<EventName extends keyof EventTypes>(event: EventName, listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>): this;
     /**
      * Removes a listener from a specific event. If no listener is provided, all listeners
      * for the event are removed.
@@ -63,7 +63,7 @@ declare class EventEmitter<EventTypes> {
      *                   listeners for the event are removed.
      * @returns The instance of the EventEmitter for method chaining.
      */
-    off<EventName extends keyof EventTypes>(event: EventName, listener?: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>): EventEmitter<EventTypes>;
+    off<EventName extends keyof EventTypes>(event: EventName, listener?: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>): this;
     /**
      * Emits an event, invoking all registered listeners for that event with the provided
      * arguments. If any listener returns a promise, the method itself will return a promise
@@ -81,7 +81,7 @@ declare class EventEmitter<EventTypes> {
      * @param listener - The function to invoke once when the event is emitted.
      * @returns The instance of the EventEmitter for method chaining.
      */
-    once<EventName extends keyof EventTypes>(event: EventName, listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>): EventEmitter<EventTypes>;
+    once<EventName extends keyof EventTypes>(event: EventName, listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>): this;
 }
 
 declare const version: string;

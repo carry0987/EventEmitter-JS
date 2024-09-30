@@ -57,7 +57,7 @@ class EventEmitter<EventTypes> {
     public addListener<EventName extends keyof EventTypes>(
         event: EventName,
         listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>
-    ): EventEmitter<EventTypes> {
+    ): this {
         return this.on(event, listener);
     }
 
@@ -68,7 +68,7 @@ class EventEmitter<EventTypes> {
      *                If omitted, all event listeners are cleared.
      * @returns The instance of the EventEmitter for method chaining.
      */
-    public clearListener<EventName extends keyof EventTypes>(event?: EventName): EventEmitter<EventTypes> {
+    public clearListener<EventName extends keyof EventTypes>(event?: EventName): this {
         if (event) {
             this.callbacks[event as string] = [];
         } else {
@@ -88,7 +88,7 @@ class EventEmitter<EventTypes> {
     public on<EventName extends keyof EventTypes>(
         event: EventName,
         listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>
-    ): EventEmitter<EventTypes> {
+    ): this {
         this.checkListener(listener);
 
         this.init(event as string);
@@ -108,7 +108,7 @@ class EventEmitter<EventTypes> {
     public off<EventName extends keyof EventTypes>(
         event: EventName,
         listener?: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>
-    ): EventEmitter<EventTypes> {
+    ): this {
         if (listener) {
             this.checkListener(listener);
         }
@@ -195,7 +195,7 @@ class EventEmitter<EventTypes> {
     public once<EventName extends keyof EventTypes>(
         event: EventName,
         listener: (...args: EventArgs<EventTypes[EventName]>) => void | Promise<void>
-    ): EventEmitter<EventTypes> {
+    ): this {
         this.checkListener(listener);
 
         const onceListener = (...args: EventArgs<EventTypes[EventName]>) => {
