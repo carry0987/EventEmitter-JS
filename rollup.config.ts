@@ -1,9 +1,9 @@
+import { RollupOptions } from 'rollup';
 import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
 import replace from '@rollup/plugin-replace';
-import resolve from '@rollup/plugin-node-resolve';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import { dts } from 'rollup-plugin-dts';
-import del from 'rollup-plugin-delete';
 import { createRequire } from 'module';
 
 const pkg = createRequire(import.meta.url)('./package.json');
@@ -11,7 +11,7 @@ const isDts = process.env.BUILD === 'dts';
 const sourceFile = 'src/index.ts';
 
 // ESM build configuration
-const esmConfig = {
+const esmConfig: RollupOptions = {
     input: sourceFile,
     output: [
         {
@@ -21,8 +21,8 @@ const esmConfig = {
         }
     ],
     plugins: [
-        resolve(),
         typescript(),
+        nodeResolve(),
         replace({
             preventAssignment: true,
             __version__: pkg.version
@@ -31,7 +31,7 @@ const esmConfig = {
 };
 
 // UMD build configuration
-const umdConfig = {
+const umdConfig: RollupOptions = {
     input: sourceFile,
     output: {
         file: pkg.exports['.'].umd,
@@ -41,8 +41,8 @@ const umdConfig = {
         plugins: !isDts ? [terser()] : []
     },
     plugins: [
-        resolve(),
         typescript(),
+        nodeResolve(),
         replace({
             preventAssignment: true,
             __version__: pkg.version
@@ -51,15 +51,14 @@ const umdConfig = {
 };
 
 // TypeScript type definition configuration
-const dtsConfig = {
+const dtsConfig: RollupOptions = {
     input: sourceFile,
     output: {
         file: pkg.exports['.'].types,
         format: 'es'
     },
     plugins: [
-        dts(),
-        del({ hook: 'buildEnd', targets: 'dist/dts' })
+        dts()
     ]
 };
 
