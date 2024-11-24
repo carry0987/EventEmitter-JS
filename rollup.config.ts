@@ -2,6 +2,7 @@ import { RollupOptions } from 'rollup';
 import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
 import replace from '@rollup/plugin-replace';
+import tsConfigPaths from 'rollup-plugin-tsconfig-paths';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import { dts } from 'rollup-plugin-dts';
 import { createRequire } from 'module';
@@ -22,6 +23,7 @@ const esmConfig: RollupOptions = {
     ],
     plugins: [
         typescript(),
+        tsConfigPaths(),
         nodeResolve(),
         replace({
             preventAssignment: true,
@@ -42,6 +44,7 @@ const umdConfig: RollupOptions = {
     },
     plugins: [
         typescript(),
+        tsConfigPaths(),
         nodeResolve(),
         replace({
             preventAssignment: true,
@@ -58,6 +61,7 @@ const dtsConfig: RollupOptions = {
         format: 'es'
     },
     plugins: [
+        tsConfigPaths(),
         dts()
     ]
 };

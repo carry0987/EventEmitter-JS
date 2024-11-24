@@ -1,11 +1,11 @@
-import { EventArgs } from '../type/types';
+import { EventArgs } from '@/type/types';
 
 class EventEmitter<EventTypes> {
     // Initialize callbacks with an empty object
     private callbacks: { [event: string]: ((...args: any[]) => void | Promise<void>)[] } = {};
 
-    /** 
-     * Initializes the callbacks for a given event. If the event does not already have 
+    /**
+     * Initializes the callbacks for a given event. If the event does not already have
      * an entry in the callbacks object, a new empty array is created for it.
      * @param event - The name of the event to initialize. If not provided, it checks
      *                 for undefined events and initializes them if needed.
@@ -16,10 +16,10 @@ class EventEmitter<EventTypes> {
         }
     }
 
-    /** 
-     * Checks if a listener is a valid function. Throws a TypeError if the listener 
+    /**
+     * Checks if a listener is a valid function. Throws a TypeError if the listener
      * is not a function.
-     * @param listener - The listener to check. Should be a function that either returns void 
+     * @param listener - The listener to check. Should be a function that either returns void
      *                   or a Promise that resolves to void.
      */
     private checkListener(listener: (...args: any[]) => void | Promise<void>): void {
@@ -28,7 +28,7 @@ class EventEmitter<EventTypes> {
         }
     }
 
-    /** 
+    /**
      * Checks whether a specific event has been registered within the emitter.
      * @param event - The name of the event to check for existence.
      * @returns A boolean indicating whether the event exists in the callbacks.
@@ -37,18 +37,18 @@ class EventEmitter<EventTypes> {
         return this.callbacks[event] !== undefined;
     }
 
-    /** 
+    /**
      * Retrieves all the listeners currently registered to the emitter.
      * @returns An object containing all registered events and their associated listeners.
-     *          Each key is a string representing the event name, mapping to an array of 
+     *          Each key is a string representing the event name, mapping to an array of
      *          listener functions.
      */
     public listeners(): { [event: string]: ((...args: any[]) => void | Promise<void>)[] } {
         return this.callbacks;
     }
 
-    /** 
-     * Adds a listener function for the specified event. This method is an alias for the 
+    /**
+     * Adds a listener function for the specified event. This method is an alias for the
      * `on` method, purely for semantic purposes.
      * @param event - The name of the event to listen to.
      * @param listener - The function to invoke when the event is emitted. Can be asynchronous.
@@ -61,7 +61,7 @@ class EventEmitter<EventTypes> {
         return this.on(event, listener);
     }
 
-    /** 
+    /**
      * Clears all listeners for a specific event or, if no event is provided, clears all
      * listeners for all events.
      * @param event - Optional. The name of the event whose listeners should be cleared.
@@ -78,7 +78,7 @@ class EventEmitter<EventTypes> {
         return this;
     }
 
-    /** 
+    /**
      * Adds a listener for a specific event type. Initializes the event if it's not already
      * present and ensures the listener is valid.
      * @param event - The name of the event to listen to.
@@ -97,11 +97,11 @@ class EventEmitter<EventTypes> {
         return this;
     }
 
-    /** 
+    /**
      * Removes a listener from a specific event. If no listener is provided, all listeners
      * for the event are removed.
      * @param event - The name of the event to remove a listener from.
-     * @param listener - Optional. The specific listener to remove. If not provided, all 
+     * @param listener - Optional. The specific listener to remove. If not provided, all
      *                   listeners for the event are removed.
      * @returns The instance of the EventEmitter for method chaining.
      */
@@ -122,9 +122,7 @@ class EventEmitter<EventTypes> {
         }
 
         if (listener) {
-            this.callbacks[eventName] = this.callbacks[eventName].filter(
-                (value) => value !== listener
-            );
+            this.callbacks[eventName] = this.callbacks[eventName].filter((value) => value !== listener);
         } else {
             // Remove all listeners if no specific listener is provided
             this.callbacks[eventName] = [];
@@ -133,7 +131,7 @@ class EventEmitter<EventTypes> {
         return this;
     }
 
-    /** 
+    /**
      * Emits an event, invoking all registered listeners for that event with the provided
      * arguments. If any listener returns a promise, the method itself will return a promise
      * that resolves when all listeners have been processed.
@@ -157,7 +155,7 @@ class EventEmitter<EventTypes> {
         }
 
         // Get all results
-        const results = this.callbacks[eventName].map(callback => {
+        const results = this.callbacks[eventName].map((callback) => {
             try {
                 // Execute callback and capture the result
                 const result = callback(...args);
@@ -171,21 +169,23 @@ class EventEmitter<EventTypes> {
         });
 
         // Check if any result is a promise
-        const hasPromise = results.some(result => result instanceof Promise);
+        const hasPromise = results.some((result) => result instanceof Promise);
 
         // If there is at least one promise, return a promise that resolves when all promises resolve
         if (hasPromise) {
-            return Promise.all(results).then(() => true).catch((e) => {
-                console.error(`Error handling promises for event: ${eventName}`, e); // Logging error
-                return false;
-            });
+            return Promise.all(results)
+                .then(() => true)
+                .catch((e) => {
+                    console.error(`Error handling promises for event: ${eventName}`, e); // Logging error
+                    return false;
+                });
         } else {
             // If no promises, return true
             return true;
         }
     }
 
-    /** 
+    /**
      * Adds a listener for a specific event that will only be invoked once. After the first
      * invocation, the listener will be automatically removed.
      * @param event - The name of the event to listen to once.

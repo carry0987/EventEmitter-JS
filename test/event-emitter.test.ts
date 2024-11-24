@@ -84,7 +84,7 @@ describe('EventEmitter', () => {
         const callback2 = vi.fn();
         emitter.on('event1', callback1);
         emitter.on('event2', callback2);
-        
+
         emitter.clearListener();
 
         await emitter.emit('event1', 'test');
@@ -99,7 +99,7 @@ describe('EventEmitter', () => {
         const callback2 = vi.fn();
         emitter.on('event1', callback1);
         emitter.on('event2', callback2);
-        
+
         emitter.clearListener();
 
         emitter.emit('event1', 'test');

@@ -6,7 +6,10 @@
     "esModuleInterop": true,
     "importHelpers": true,
     "strict": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "src/**/*.ts",

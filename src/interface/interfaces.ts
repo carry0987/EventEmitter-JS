@@ -1,4 +1,4 @@
-import { EventArgs } from '../type/types';
+import { EventArgs } from '@/type/types';
 
 /**
  * Example:
@@ -23,10 +23,7 @@ export interface EventEmitter<EventTypes> {
         listener?: (...args: EventArgs<EventTypes[EventName]>) => void
     ): EventEmitter<EventTypes>;
 
-    emit<EventName extends keyof EventTypes>(
-        event: EventName,
-        ...args: EventArgs<EventTypes[EventName]>
-    ): boolean;
+    emit<EventName extends keyof EventTypes>(event: EventName, ...args: EventArgs<EventTypes[EventName]>): boolean;
 
     once<EventName extends keyof EventTypes>(
         event: EventName,
